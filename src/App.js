@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import DailyWeatherCard from "./components/DailyWeatherCard";
 import Selector from "./components/Selector";
+import "./App.css";
 
 function App() {
     const weatherAPI_KEY = process.env.REACT_APP_WEATHER_API_KEY;
@@ -9,11 +10,11 @@ function App() {
     console.log(geocodingAPI_KEY);
 
     const [weatherData, setWeatherData] = useState([]);
-    const [nomos, setNomos] = useState('');
-    const [error, setError] = useState('');
-    const [coords, setCoords] = useState({lat:null, lon:null});
+    const [nomos, setNomos] = useState("");
+    const [error, setError] = useState("");
+    const [coords, setCoords] = useState({ lat: null, lon: null });
 
-    const [city, setCity] = useState('');
+    const [city, setCity] = useState("");
 
     const fetchGeoData = async () => {
         try {
@@ -37,24 +38,33 @@ function App() {
         }
     };
     const fetchData = async () => {
-            if (city){
-                setError('')
-                const cityInfo = await fetchGeoData();
-                if (cityInfo)
-                    fetchWeatherData(cityInfo.results[0].geometry.lat, cityInfo.results[0].geometry.lng);
-                else
-                    setError('enter a valid city name');
-            }
-            else
-                setError('enter a city')
-    }
+        if (city) {
+            setError("");
+            const cityInfo = await fetchGeoData();
+            if (cityInfo)
+                fetchWeatherData(
+                    cityInfo.results[0].geometry.lat,
+                    cityInfo.results[0].geometry.lng
+                );
+            else setError("enter a valid city name");
+        } else setError("enter a city");
+    };
 
     useEffect(() => {
         if ("geolocation" in navigator) {
             navigator.geolocation.getCurrentPosition(function (position) {
-                fetchWeatherData(position.coords.latitude, position.coords.longitude);
-                console.log(position.coords.latitude, position.coords.longitude);
-                setCoords({lat: position.coords.latitude, lon: position.coords.longitude});
+                fetchWeatherData(
+                    position.coords.latitude,
+                    position.coords.longitude
+                );
+                console.log(
+                    position.coords.latitude,
+                    position.coords.longitude
+                );
+                setCoords({
+                    lat: position.coords.latitude,
+                    lon: position.coords.longitude,
+                });
             });
         } else {
             console.log("Not Available");
@@ -66,10 +76,14 @@ function App() {
             <Selector
                 changeCity={(e) => setCity(e.target.value)}
                 city={city}
-                fetchData= { fetchData }
-                error = {error}
+                fetchData={fetchData}
+                error={error}
             />
-            <DailyWeatherCard weatherData={weatherData} coordsData={nomos} coords = {coords} />
+            <DailyWeatherCard
+                weatherData={weatherData}
+                coordsData={nomos}
+                coords={coords}
+            />
         </div>
     );
 }
