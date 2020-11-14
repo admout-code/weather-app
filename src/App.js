@@ -10,7 +10,7 @@ function App() {
     console.log(geocodingAPI_KEY);
 
     const [weatherData, setWeatherData] = useState([]);
-    const [nomos, setNomos] = useState("");
+    const [county, setCounty] = useState("");
     const [error, setError] = useState("");
     const [coords, setCoords] = useState({ lat: null, lon: null });
 
@@ -21,7 +21,7 @@ function App() {
             const geocoding_url = `https://api.opencagedata.com/geocode/v1/json?q=${city}&key=${geocodingAPI_KEY}`;
             let response = await fetch(geocoding_url);
             const geo_data = await response.json();
-            setNomos(geo_data.results[0].formatted);
+            setCounty(geo_data.results[0].formatted);
             return geo_data;
         } catch (error) {
             console.log(error);
@@ -37,7 +37,8 @@ function App() {
             console.log(error);
         }
     };
-    const fetchData = async () => {
+    const fetchData = async (event) => {
+        event.preventDefault();
         if (city) {
             setError("");
             const cityInfo = await fetchGeoData();
@@ -81,7 +82,7 @@ function App() {
             />
             <DailyWeatherCard
                 weatherData={weatherData}
-                coordsData={nomos}
+                coordsData={county}
                 coords={coords}
             />
         </div>
