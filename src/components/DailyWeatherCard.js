@@ -7,7 +7,6 @@ import PrevArrow from "../images/prev_white2.png";
 
 export default function DailyWeatherCard({ weatherData, coordsData, coords }) {
     const [day, setDay] = useState(0);
-    // const { lat, lon } = coords;
 
     const next = () => {
         if (day < 7) setDay(day + 1);
@@ -18,12 +17,11 @@ export default function DailyWeatherCard({ weatherData, coordsData, coords }) {
     const timestampToString = (timestamp) =>
         new Date(timestamp * 1000).toDateString();
 
-    if (!weatherData.daily) return <div>Enter a city...</div>;
+    if (!weatherData.daily) return <div style={{color: "white", fontSize: "1.5rem"}}>Enter a city...</div>;
 
     return (
         <Container>
             <HeaderDiv>
-                {/* <Timezone>Timezone: {weatherData.timezone}</Timezone> */}
                 {coordsData ? (
                     <Location color="white">{coordsData}</Location>
                 ) : (
@@ -32,8 +30,7 @@ export default function DailyWeatherCard({ weatherData, coordsData, coords }) {
             </HeaderDiv>
 
             <DateSpan>
-                {" "}
-                {timestampToString(weatherData.daily[day].dt)}{" "}
+                {timestampToString(weatherData.daily[day].dt)}
             </DateSpan>
 
             <Daily>
@@ -68,10 +65,6 @@ const Container = styled.div`
     align-items: center;
 `;
 
-const Timezone = styled.span`
-    color: white;
-    font-size: 1.3rem;
-`;
 const Location = styled.span`
     color: ${(props) => props.color};
     font-size: 2rem;
@@ -81,7 +74,6 @@ const DateSpan = styled.span`
     display: flex;
     justify-content: center;
     color: white;
-    /* background-color: rgba(255, 255, 255, 0.15); */
     border: solid 1px white;
     border-radius: 10px;
     width: 17rem;
@@ -119,7 +111,6 @@ const Cards = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
-    /* width: 50rem; */
 `;
 
 const DayCard = styled.div`
